@@ -8,7 +8,7 @@ const ListItem = (props) => {
       <View style={styles.imagebox}>
         <Image
           style={styles.image}
-          source={{uri: props.singleMedia.thumbnails.w160}}
+          source={{uri: props.singleMedia.thumbnails.w160}}//Huom B kohta. Vaihda Filename. Voidaan käydä mapilla läpi ja lisätä thumbnail
         />
       </View>
       <View style={styles.textbox}>
