@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-
+const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/";
 const ListItem = (props) => {
   return (
     <TouchableOpacity style={styles.row}>
