@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, keyExtractor } from "react";
+import React, { useContext, useEffect, keyExtractor,StyleSheet } from "react";
 import PropTypes from "prop-types";
 import { FlatList } from "react-native";
 import ListItem from "./ListItem";
 import { MediaContext } from "../contexts/MediaContext";
 
 //const dataUrl = "https://raw.githubusercontent.com/mattpe/wbma/master/docs/assets/test.json"
-const dataUrl = "http://media.mw.metropolia.fi/wbma/media?start=20&limit=20";
+const dataUrl = "http://media.mw.metropolia.fi/wbma/media?start=15&limit=15";
 const mediaUrl = "http://media.mw.metropolia.fi/wbma/media/";
 const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/"; //concat thumbnail to this
 
@@ -46,12 +46,14 @@ const List = props => {
 
   return (
     <FlatList
+
       data={media}
       renderItem={({ item }) => <ListItem singleMedia={item} />}
       keyExtractor={(item, index) => index.toString()}
     />
   );
 };
+
 
 List.propTypes = {
   mediaArray: PropTypes.array
