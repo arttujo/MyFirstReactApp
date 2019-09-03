@@ -12,23 +12,6 @@ const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/"; //concat thumbna
 const kk = [];
 const List = props => {
   const [media, setMedia] = useContext(MediaContext);
-  //console.log(media);
-
-  /*
-    const useFetch=()=>{
-      const [media, setMedia] = useContext(StateContext);
-      const [loading, setLoading]= useState(true);
-      const fetchUrl=async()=>{
-        const response await fetch(url);
-        const json = await.response.json();
-        setMedia(json);
-        setLoading(false)
-      };
-      useEffect(fetchUrl,[]);
-      return[media,loading];
-    }
-
-  */
   const getMedia = () => {
     fetch(dataUrl)
       .then(response => {
@@ -37,7 +20,7 @@ const List = props => {
       .then(result => {
         //console.log("fetced from server: ", result);
         for (const id in result) {
-          console.log(id);
+          //console.log(id);
           //let id = result[i].file_id;
           fetch(mediaUrl + id)
             .then(response => {
@@ -50,10 +33,6 @@ const List = props => {
               result.thumbnails.w640 = thumbUrl + result.thumbnails.w640;
               result.filename = thumbUrl + result.filename;
               kk.push(result);
-              console.log(
-                "This is the final Array of Objects to be passed on: \n",
-                kk
-              );
               setMedia(kk);
             });
         }
@@ -65,8 +44,9 @@ const List = props => {
   return (
     <FlatList
       data={media}
-      renderItem={
-        ({ item }) => <ListItem navigation={props.navigation} singleMedia={item} />}
+      renderItem={({ item }) => (
+        <ListItem navigation={props.navigation} singleMedia={item} />
+      )}
       keyExtractor={(item, index) => index.toString()}
     />
   );

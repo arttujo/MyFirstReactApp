@@ -10,7 +10,7 @@ const ListItem = props => {
       style={styles.row}
       onPress={() => {
         navigation.push("Single", {file: singleMedia});
-        console.log("pushing this object: "+ singleMedia )
+        //console.log("pushing this object: "+ singleMedia )
       }}
     >
       <View style={styles.imagebox}>

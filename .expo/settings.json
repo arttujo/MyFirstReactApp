@@ -1,8 +1,8 @@
 {
-  "urlRandomness": "st-i6q",
+  "urlRandomness": "67-7zq",
   "hostType": "tunnel",
   "lanType": "ip",
-  "dev": false,
-  "minify": true,
+  "dev": true,
+  "minify": false,
   "https": false
 }

@@ -4,7 +4,7 @@ import Navigator from "../navigators/Navigator"
 const Single = (props) => {
   const {navigation} = props;
   const file = navigation.getParam('file')
-  console.log(file.title)
+  //console.log(file.title)
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{file.title}</Text>
