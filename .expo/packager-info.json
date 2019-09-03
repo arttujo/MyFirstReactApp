@@ -1,10 +1,10 @@
 {
   "expoServerNgrokUrl": "https://st-i6q.anonymous.myapp.exp.direct",
   "packagerNgrokUrl": "https://packager.st-i6q.anonymous.myapp.exp.direct",
-  "ngrokPid": 23828,
+  "ngrokPid": 4648,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 24028,
+  "packagerPid": 14432,
   "webpackServerPort": null
 }

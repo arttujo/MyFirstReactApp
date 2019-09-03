@@ -3,21 +3,27 @@ import PropTypes from "prop-types";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/";
 const ListItem = props => {
+  const {navigation, singleMedia} = props;
+
   return (
-
-      <TouchableOpacity style={styles.row}>
-        <View style={styles.imagebox}>
-          <Image
-            style={styles.image}
-            source={{ uri: props.singleMedia.thumbnails.w160 }} //Huom B kohta. Vaihda Filename. Voidaan käydä mapilla läpi ja lisätä thumbnail
-          />
-        </View>
-        <View style={styles.textbox}>
-          <Text style={styles.listTitle}> {props.singleMedia.title} </Text>
-          <Text> {props.singleMedia.description} </Text>
-        </View>
-      </TouchableOpacity>
-
+    <TouchableOpacity
+      style={styles.row}
+      onPress={() => {
+        navigation.push("Single", {file: singleMedia});
+        console.log("pushing this object: "+ singleMedia )
+      }}
+    >
+      <View style={styles.imagebox}>
+        <Image
+          style={styles.image}
+          source={{ uri: props.singleMedia.thumbnails.w160 }} //Huom B kohta. Vaihda Filename. Voidaan käydä mapilla läpi ja lisätä thumbnail
+        />
+      </View>
+      <View style={styles.textbox}>
+        <Text style={styles.listTitle}> {props.singleMedia.title} </Text>
+        <Text> {props.singleMedia.description} </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
