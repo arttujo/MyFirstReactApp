@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { MediaContext } from "../contexts/MediaContext";
 
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
+const regUrl = 'http://media.mw.metropolia.fi/wbma/users/';
 
 const fetchGetUrl = async url => {
   const userToken = await AsyncStorage.getItem("userToken");
@@ -82,43 +83,17 @@ const mediaAPI = () => {
       AsyncStorage.setItem("user", JSON.stringify(json));
     });
   };
-
-  // getAvatarAsync = async user => {
-  //   const [avatar, setAvatar] = useState({});
-  //   console.log("This is inside the getAvatar function in ApiHooks:" + user);
-  //   console.log("avatar", apiUrl + "tags/avatar_" + user.user_id);
-  //   fetchGetUrl(apiUrl + "tags/avatar_" + user.user_id).then(json => {
-  //     console.log("avatarjson", json[0].filename);
-  //     setAvatar(apiUrl + "uploads/" + json[0].filename);
-  //   });
-  //   AsyncStorage.setItem("avatar", JSON.stringify(avatar));
-  //   console.log("this is the avatar going to AsyncStorage: " + avatar);
-  // };
-
   const getAvatar = () => {
     const { user } = useContext(MediaContext);
     console.log("get user avatar", user);
     let avatar;
     console.log("avatar", apiUrl + "tags/avatar_" + user.user_id);
-    return fetchGetUrl(apiUrl + "tags/avatar_" + user.user_id).then(
-      json => {
-        console.log("avatarJson", json);
-        avatar = apiUrl + "uploads/" + json[0].filename;
-        return avatar;
-      }
-    );
+    return fetchGetUrl(apiUrl + "tags/avatar_" + user.user_id).then(json => {
+      console.log("avatarJson", json);
+      avatar = apiUrl + "uploads/" + json[0].filename;
+      return avatar;
+    });
   };
-
-  // const getAvatar = user => {
-  //   const [avatar, setAvatar] = useState({});
-  //   console.log("This is inside the getAvatar function in ApiHooks:" + user);
-  //   console.log("avatar", apiUrl + "tags/avatar_" + user.user_id);
-  //   fetchGetUrl(apiUrl + "tags/avatar_" + user.user_id).then(json => {
-  //     console.log("avatarjson", json[0].filename);
-  //     setAvatar(apiUrl + "uploads/" + json[0].filename);
-  //   });
-  //   return avatar;
-  // };
 
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
@@ -134,6 +109,28 @@ const mediaAPI = () => {
     return [user];
   };
 
+  const checkUser = async (uname) => {
+    const response = await fetch(regUrl + "/username/" + uname, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }).catch(error => {
+      console.error(error);
+    });
+    const result = await response.json();
+    const unameStatus = result.available;
+    console.log("Username Result", result);
+    if (!unameStatus) {
+      Alert.alert(
+        "Error",
+        "Username already taken",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+    }
+  };
+
   return {
     getAllMedia,
     getThumbnail,
@@ -141,7 +138,8 @@ const mediaAPI = () => {
     registerAsync,
     getUserFromToken,
     getAvatar,
-    userToContext
+    userToContext,
+    checkUser
   };
 };
 

@@ -5,33 +5,30 @@ import { createStackNavigator } from "react-navigation-stack";
 import Home from "../views/Home";
 import Profile from "../views/Profile";
 import Single from "../views/Single";
-import AuthLoading from '../views/AuthLoading';
-import Login from '../views/Login';
-import {Icon} from "native-base"
+import AuthLoading from "../views/AuthLoading";
+import Login from "../views/Login";
+import { Icon } from "native-base";
 
 const TabNavigator = createBottomTabNavigator(
   {
     Home,
-    Profile,
+    Profile
   },
   {
-    defaultNavigationOptions: ({navigation}) => ({
+    defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: () => {
-        const {routeName} = navigation.state;
+        const { routeName } = navigation.state;
         let iconName;
-        if (routeName === 'Home') {
-          iconName = 'home';
-        } else if (routeName === 'Profile') {
-          iconName = 'person';
+        if (routeName === "Home") {
+          iconName = "home";
+        } else if (routeName === "Profile") {
+          iconName = "person";
         }
 
         // You can return any component that you like here!
-        return <Icon
-          name={iconName}
-          size={25}
-        />;
-      },
-    }),
+        return <Icon name={iconName} size={25} />;
+      }
+    })
   }
 );
 
@@ -49,7 +46,7 @@ const StackNavigator = createStackNavigator(
     },
     Logout: {
       screen: Login
-    }
+    },
   }
 );
 
@@ -60,7 +57,7 @@ const Navigator = createSwitchNavigator(
     Auth: Login,
   },
   {
-    initialRouteName: 'AuthLoading',
+    initialRouteName: "AuthLoading"
   }
 );
 
