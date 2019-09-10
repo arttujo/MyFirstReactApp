@@ -1,10 +1,10 @@
 {
-  "expoServerNgrokUrl": "https://67-7zq.anonymous.myapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.67-7zq.anonymous.myapp.exp.direct",
-  "ngrokPid": 13916,
+  "expoServerNgrokUrl": "https://jc-quq.anonymous.myapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.jc-quq.anonymous.myapp.exp.direct",
+  "ngrokPid": 13700,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 15432,
+  "packagerPid": 12640,
   "webpackServerPort": null
 }

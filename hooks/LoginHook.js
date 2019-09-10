@@ -14,18 +14,7 @@ const useSignUpForm = () => {
       password: text
     }));
   };
-  const handleUsernameChangeReg = text => {
-    setInputs(inputs => ({
-      ...inputs,
-      username: text
-    }));
-  };
-  const handlePasswordChangeReg = text => {
-    setInputs(inputs => ({
-      ...inputs,
-      password: text
-    }));
-  };
+
   const handleEmailChange = text => {
     setInputs(inputs => ({
       ...inputs,
@@ -43,8 +32,6 @@ const useSignUpForm = () => {
     handleUsernameChange,
     handlePasswordChange,
     inputs,
-    handleUsernameChangeReg,
-    handlePasswordChangeReg,
     handleEmailChange,
     handleFullnameChange
   };

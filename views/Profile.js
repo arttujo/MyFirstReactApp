@@ -1,67 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, AsyncStorage, Button } from "react-native";
-
-// const getInfo = async () => {
-//   const userName = await AsyncStorage.getItem("username");
-//   const userEmail = await AsyncStorage.getItem("email");
-//   const userFullname = await AsyncStorage.getItem("fullname");
-//   const [user, setUser] = useState({});
-// };
-
-// useEffect(() => {
-//   getInfo();
-// }, []);
+import { AsyncStorage,Image } from "react-native";
+import PropTypes from "prop-types";
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  Text,
+  Button,
+  Icon,
+  Left,
+  Body,
+  Right,
+  Font,
+} from "native-base";
+import mediaAPI from "../hooks/ApiHooks";
 
 const Profile = props => {
+  const { getAvatar } = mediaAPI();
+
   const [user, setUser] = useState({});
   const getUser = async () => {
-    const username = await AsyncStorage.getItem('username');
-    setUser({username: username})
-    console.log(username)
+    const user = await AsyncStorage.getItem("user");
+    setUser(JSON.parse(user));
   };
 
-const [email,setEMail] = useState({});
-const getEmail = async() =>{
-  const email = await AsyncStorage.getItem('email');
-  setEMail({email: email})
-};
+  const [avatar, setAvatar] = useState(undefined);
+  getAvatar().then(result => {
+    setAvatar(result);
+  });
 
-const [fullname, setFullname] = useState({});
-const getFullname = async() =>{
-  const fullname = await AsyncStorage.getItem('fullname');
-  setFullname({fullname: fullname})
-}
+  const [email, setEMail] = useState({});
+  const getEmail = async () => {
+    const email = await AsyncStorage.getItem("user");
+    setEMail(JSON.parse(email));
+  };
+
+  const [fullname, setFullname] = useState({});
+  const getFullname = async () => {
+    const full_name = await AsyncStorage.getItem("user");
+    setFullname(JSON.parse(full_name));
+  };
+
   useEffect(() => {
     getUser();
     getEmail();
     getFullname();
   }, []);
 
-console.log();
+  console.log();
   const signOutAsync = async () => {
     await AsyncStorage.clear();
     props.navigation.navigate("Auth");
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ textDecorationLine: "underline" }}>Profile</Text>
-      <Text>Username: {user.username}</Text>
-      <Text>Email: {email.email}</Text>
-      <Text>Fullname: {fullname.fullname}</Text>
-      <Button title="Logout!" onPress={signOutAsync} />
-    </View>
+    <Card>
+      <CardItem header>
+        <Text>Profile</Text>
+      </CardItem>
+      <CardItem>
+        <Left>
+          <Image source={{ uri: avatar }} style ={{width: 100, height: 100}}/>
+        </Left>
+        <Body>
+          <Text>Username: {user.username}</Text>
+          <Text>Email: {email.email}</Text>
+          <Text>Full Name: {fullname.full_name}</Text>
+        </Body>
+      </CardItem>
+      <CardItem>
+        <Body>
+          <Button onPress={signOutAsync}>
+            <Text>Log Out</Text>
+          </Button>
+        </Body>
+      </CardItem>
+    </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 40
-  }
-});
 
 export default Profile;

@@ -1,50 +1,39 @@
-import React, { useContext, useEffect, keyExtractor, StyleSheet } from "react";
+import React, { useContext, useEffect, keyExtractor, StyleSheet,useState } from "react";
 import PropTypes from "prop-types";
 import { FlatList } from "react-native";
 import ListItem from "./ListItem";
 import { MediaContext } from "../contexts/MediaContext";
+import {List as BaseList} from 'native-base';
 
-//const dataUrl = "https://raw.githubusercontent.com/mattpe/wbma/master/docs/assets/test.json"
-const dataUrl = "http://media.mw.metropolia.fi/wbma/media?start=15&limit=15";
-const mediaUrl = "http://media.mw.metropolia.fi/wbma/media/";
-const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/"; //concat thumbnail to this
 
-const kk = [];
-const List = props => {
-  const [media, setMedia] = useContext(MediaContext);
-  const getMedia = () => {
-    fetch(dataUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        //console.log("fetced from server: ", result);
-        for (const id in result) {
-          //console.log(id);
-          //let id = result[i].file_id;
-          fetch(mediaUrl + id)
-            .then(response => {
-              return response.json();
-            })
-            .then(result => {
-              //Adding url inside the objects for ListItem to use
-              result.thumbnails.w160 = thumbUrl + result.thumbnails.w160;
-              result.thumbnails.w320 = thumbUrl + result.thumbnails.w320;
-              result.thumbnails.w640 = thumbUrl + result.thumbnails.w640;
-              result.filename = thumbUrl + result.filename;
-              kk.push(result);
-              setMedia(kk);
-            });
-        }
-      });
+
+
+const useFetch = (url) => {
+  const {media, setMedia} = useContext(MediaContext);
+  const [loading, setLoading] = useState(true);
+  const fetchUrl = async () => {
+    const response = await fetch(url);
+    const json = await response.json();
+    setMedia(json);
+    setLoading(false);
   };
+  useEffect(() => {
+    fetchUrl();
+  }, []);
+  return [media, loading];
+};
 
-  useEffect(() => getMedia(), []);
+
+const List = props => {
+  const {navigation} = props;
+  const [media, loading] = useFetch('http://media.mw.metropolia.fi/wbma/media/');
+ // console.log(loading);
+ // console.log('media', media);
 
   return (
-    <FlatList
-      data={media}
-      renderItem={({ item }) => (
+    <BaseList
+      dataArray={media}
+      renderRow={( item ) => (
         <ListItem navigation={props.navigation} singleMedia={item} />
       )}
       keyExtractor={(item, index) => index.toString()}
@@ -53,7 +42,7 @@ const List = props => {
 };
 
 List.propTypes = {
-  mediaArray: PropTypes.array
+  navigation: PropTypes.object,
 };
 
 export default List;

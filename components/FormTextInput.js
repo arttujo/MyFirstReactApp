@@ -15,10 +15,7 @@ const FormTextInput = (props) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    height: 40,
-    width:200,
-    borderColor: '#ccc',
-    borderWidth: 1,
+
   },
 });
 

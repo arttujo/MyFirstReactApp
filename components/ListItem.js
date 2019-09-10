@@ -1,63 +1,64 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-const thumbUrl = "http://media.mw.metropolia.fi/wbma/uploads/";
-const ListItem = props => {
-  const {navigation, singleMedia} = props;
+import { StyleSheet, Text, View, Image, TouchableOpacity, } from "react-native";
+import {
+  ListItem as BaseListItem,
+  Left,
+  Body,
+  Right,
+  Thumbnail,
+  Content,
+  Button,
+  List
+} from "native-base";
 
-  return (
-    <TouchableOpacity
-      style={styles.row}
-      onPress={() => {
-        navigation.push("Single", {file: singleMedia});
-        //console.log("pushing this object: "+ singleMedia )
-      }}
-    >
-      <View style={styles.imagebox}>
-        <Image
-          style={styles.image}
-          source={{ uri: props.singleMedia.thumbnails.w160 }} //Huom B kohta. Vaihda Filename. Voidaan käydä mapilla läpi ja lisätä thumbnail
-        />
-      </View>
-      <View style={styles.textbox}>
-        <Text style={styles.listTitle}> {props.singleMedia.title} </Text>
-        <Text> {props.singleMedia.description} </Text>
-      </View>
-    </TouchableOpacity>
-  );
+const getThumbnail = (url) => {
+ // console.log('urli', url);
+  const [thumbnails, setThumbnails] = useState({});
+  async function fetchUrl() {
+   // console.log('fetsurl');
+    const response = await fetch('http://media.mw.metropolia.fi/wbma/media/' + url);
+    const json = await response.json();
+    //console.log('json', json);
+    setThumbnails(json.thumbnails);
+  }
+  useEffect(() => {
+    fetchUrl();
+  }, []);
+  return thumbnails;
 };
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    padding: 15,
-    marginBottom: 5,
-    backgroundColor: "#eee",
-    borderRadius: 16,
-    elevation: 3
-  },
+const ListItem = props => {
+  const {navigation, singleMedia} = props;
+  const tn = getThumbnail(singleMedia.file_id);
 
-  imagebox: {
-    flex: 1,
-    borderRadius: 10
-  },
-  image: {
-    flex: 1,
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2
-  },
-  textbox: {
-    flex: 2,
-    padding: 10
-  },
-  listTitle: {
-    fontWeight: "bold",
-    fontSize: 20,
-    paddingBottom: 15,
-    color: "#f5c720"
-  }
-});
+  return (
+    <BaseListItem thumbnail>
+      <Left>
+        <Thumbnail
+          circle
+          large
+          source={{ uri:'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160 }}
+        />
+      </Left>
+      <Body>
+        <Text>{singleMedia.title}</Text>
+        <Text note numberOfLines={1}>
+          {singleMedia.description}
+        </Text>
+      </Body>
+      <Right>
+        <Button
+          onPress={() => {
+            navigation.push("Single", { file: singleMedia });
+          }}
+        >
+          <Text>View</Text>
+        </Button>
+      </Right>
+    </BaseListItem>
+  );
+};
 
 ListItem.propTypes = {
   singleMedia: PropTypes.object
