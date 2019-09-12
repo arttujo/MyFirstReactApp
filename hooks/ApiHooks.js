@@ -3,7 +3,7 @@ import { AsyncStorage, Alert } from "react-native";
 import { MediaContext } from "../contexts/MediaContext";
 
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
-const regUrl = 'http://media.mw.metropolia.fi/wbma/users/';
+const regUrl = "http://media.mw.metropolia.fi/wbma/users/";
 
 const fetchGetUrl = async url => {
   const userToken = await AsyncStorage.getItem("userToken");
@@ -109,7 +109,7 @@ const mediaAPI = () => {
     return [user];
   };
 
-  const checkUser = async (uname) => {
+  const checkUser = async uname => {
     const response = await fetch(regUrl + "/username/" + uname, {
       method: "GET",
       headers: {

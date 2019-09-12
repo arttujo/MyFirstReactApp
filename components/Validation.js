@@ -1,5 +1,5 @@
 
-const Validation = {
+const constraints = {
   'email': {
     presence: true,
     email: true,
