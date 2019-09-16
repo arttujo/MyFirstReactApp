@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, Text, Button, AsyncStorage } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  AsyncStorage,
+  Alert
+} from "react-native";
 import PropTypes from "prop-types";
 import FormTextInput from "../components/FormTextInput";
 import useSignUpForm from "../hooks/LoginHook";
@@ -33,7 +40,7 @@ const Login = props => {
     const constraints = {
       email: {
         presence: {
-          message: "^Please enter an Email address"
+          message: "Please enter an Email address"
         },
         email: {
           message: "^Please enter a valid email address"
@@ -46,29 +53,22 @@ const Login = props => {
         length: {
           minimum: 5,
           message: "^Password must be atleast 5 characters"
-        },
-
+        }
       },
       confirmPassword: {
-        presence: {
-          message:"^You must confirm your password"
-        },
-        equality: "password",
-        message: "^Passwords do not match"
+        equality: "password"
       },
       username: {
         presence: {
-          message:"^You must enter an username"
+          message: "Enter an username"
         },
         length: {
           minimum: 3,
           maximum: 20,
-          message: "^Please enter a valid username",
+          message: "^Please enter a valid username"
         }
       }
     };
-
-
 
     const emailError = validate({ email: inputs.email }, constraints);
     const passwordError = validate({ password: inputs.password }, constraints);
@@ -81,19 +81,27 @@ const Login = props => {
       constraints
     );
 
-    const errorArray = [
-      emailError,
-      passwordError,
-      confirmPasswordError,
-      usernameError
-    ];
-    console.log(errorArray);
-    if (errorArray.length === 0) {
+    if (
+      !emailError.email &&
+      !passwordError.password &&
+      !confirmPasswordError.confirmPassword &&
+      !usernameError.username
+    ) {
       registerAsync(inputs, props);
+      console.log("Reg Done!");
     } else {
+      const errorArray = [
+        emailError.email,
+        passwordError.password,
+        confirmPasswordError.confirmPassword,
+        usernameError.username
+      ];
+      console.log("Error Array:", errorArray);
       errorArray.forEach(item => {
-        console.log(item);
-      });
+        Alert.alert("Error!",
+        errorArray[item]);
+      })
+
     }
   };
 

@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { AsyncStorage, Alert } from "react-native";
 import { MediaContext } from "../contexts/MediaContext";
 
+
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
 const regUrl = "http://media.mw.metropolia.fi/wbma/users/";
 
@@ -130,6 +131,8 @@ const mediaAPI = () => {
       );
     }
   };
+
+
 
   return {
     getAllMedia,

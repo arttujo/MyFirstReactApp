@@ -10,6 +10,7 @@ const FormTextInput = (props) => {
       style={[styles.textInput, style]}
       {...otherProps}
     />
+
   );
 };
 
