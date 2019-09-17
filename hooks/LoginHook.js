@@ -18,7 +18,7 @@ const useSignUpForm = () => {
   const handlePasswordConfirmChange = text => {
     setInputs(inputs => ({
       ...inputs,
-      passwordConfirm: text
+      confirmPassword: text
     }));
   };
   const handleEmailChange = text => {

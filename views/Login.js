@@ -30,6 +30,7 @@ const Login = props => {
   const {
     handleUsernameChange,
     handlePasswordChange,
+    handlePasswordConfirmChange,
     inputs,
     handleEmailChange,
     handleFullnameChange,
@@ -40,34 +41,34 @@ const Login = props => {
     const constraints = {
       email: {
         presence: {
-          message: "Please enter an Email address"
+          message: "^Please enter an Email address",
         },
         email: {
-          message: "^Please enter a valid email address"
-        }
+          message: "^Please enter a valid email address",
+        },
       },
       password: {
         presence: {
-          message: "^You must enter a password!"
+          message: "^You must enter a password!",
         },
         length: {
           minimum: 5,
-          message: "^Password must be atleast 5 characters"
-        }
+          message: "^Password must be atleast 5 characters",
+        },
       },
       confirmPassword: {
         equality: "password"
       },
       username: {
         presence: {
-          message: "Enter an username"
+          message: "^You must enter an username",
         },
         length: {
           minimum: 3,
           maximum: 20,
-          message: "^Please enter a valid username"
-        }
-      }
+          message: "^Please enter a valid username",
+        },
+      },
     };
 
     const emailError = validate({ email: inputs.email }, constraints);
@@ -77,9 +78,11 @@ const Login = props => {
       constraints
     );
     const usernameError = validate(
-      { usernameError: inputs.username },
+      { username: inputs.username },
       constraints
     );
+    //console.log("ERRORS LOG:",emailError,passwordError,confirmPasswordError,usernameError)
+    //console.log("2ND ERRORS:",emailError.email,passwordError.password,confirmPasswordError.confirmPassword,usernameError.username)
 
     if (
       !emailError.email &&
@@ -91,17 +94,20 @@ const Login = props => {
       console.log("Reg Done!");
     } else {
       const errorArray = [
-        emailError.email,
+        usernameError.username,
         passwordError.password,
         confirmPasswordError.confirmPassword,
-        usernameError.username
-      ];
-      console.log("Error Array:", errorArray);
-      errorArray.forEach(item => {
-        Alert.alert("Error!",
-        errorArray[item]);
-      })
 
+        emailError.email,
+      ];
+
+      for (let i = 0; i < errorArray.length; i++) {
+        //console.log("Array item:", errorArray[i][0]);
+        if (errorArray[i]) {
+          console.log("alert:",errorArray[i][0])
+          alert(errorArray[i][0]);
+        }
+      }
     }
   };
 
