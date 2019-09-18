@@ -22,7 +22,7 @@ import {
 const Single = props => {
   const { navigation } = props;
   const file = navigation.state.params.file;
-
+  console.log("single:",file)
   return (
     <Container>
       <Content>

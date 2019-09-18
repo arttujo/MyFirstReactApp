@@ -19,7 +19,7 @@ const getThumbnail = (url) => {
    // console.log('fetsurl');
     const response = await fetch('http://media.mw.metropolia.fi/wbma/media/' + url);
     const json = await response.json();
-    //console.log('json', json);
+    //console.log('json tnail', json);
     setThumbnails(json.thumbnails);
   }
   useEffect(() => {
@@ -39,6 +39,7 @@ const ListItem = props => {
           circle
           large
           source={{ uri:'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160 }}
+
         />
       </Left>
       <Body>

@@ -39,10 +39,11 @@ const Upload = props => {
       aspect: [4, 3]
     });
 
-    console.log(result);
+    console.log("Picked Image:",result);
 
     if (!result.cancelled) {
-      setImage({ image: result.uri });
+      setImage(result);
+
     }
   };
 
@@ -88,7 +89,7 @@ const Upload = props => {
           <CardItem>
             {image && (
               <Image
-                source={{ uri: image.image }}
+                source={{ uri: image.uri }}
                 style={{
                   flex: 1,
                   width: null,
@@ -121,7 +122,8 @@ const Upload = props => {
         <Button
           title="Upload!"
           onPress={() => {
-            handleUpload(image.image,inputs.title,inputs.description);
+            handleUpload(image,inputs.title,inputs.description);
+            props.navigation.navigate("Home");
           }}
         />
       </Form>
