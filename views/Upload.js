@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -12,7 +12,10 @@ import FormTextInput from "../components/FormTextInput";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
+import mediaAPI from "../hooks/ApiHooks";
 const validate = require("validate.js");
+import { MediaContext } from "../contexts/MediaContext";
+
 
 import {
   Container,
@@ -27,9 +30,12 @@ import {
   CardItem
 } from "native-base";
 import useUploadHooks from "../hooks/UploadHooks";
+import List from "../components/List";
 
 const Upload = props => {
   const [image, setImage] = useState({});
+  const { getAllMedia } = mediaAPI();
+  const { media, setMedia } = useContext(MediaContext);
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -98,17 +104,24 @@ const Upload = props => {
       }
     };
     const titleError = validate({ title: inputs.title }, constraints);
-    const descError = validate({ description: inputs.description }, constraints);
-    if (!titleError.title && !descError.description ) {
+    const descError = validate(
+      { description: inputs.description },
+      constraints
+    );
+    if (!titleError.title && !descError.description) {
       handleUpload(image, inputs.title, inputs.description);
+      setMedia({});
+      setMedia()
+
+
       props.navigation.navigate("Home");
       console.log("Upload Done!");
     } else {
-      const errorArray = [titleError.title,descError.description];
+      const errorArray = [titleError.title, descError.description];
 
       for (let i = 0; i < errorArray.length; i++) {
         if (errorArray[i]) {
-          console.log("alert:",errorArray[i][0])
+          console.log("alert:", errorArray[i][0]);
           alert(errorArray[i][0]);
         }
       }
@@ -135,8 +148,8 @@ const Upload = props => {
               <Text>Selected Image</Text>
             </Body>
           </CardItem>
-          <CardItem>
-            {image && (
+          {image && (
+            <CardItem>
               <Image
                 source={{ uri: image.uri }}
                 style={{
@@ -145,8 +158,8 @@ const Upload = props => {
                   height: 350
                 }}
               />
-            )}
-          </CardItem>
+            </CardItem>
+          )}
         </Card>
 
         <Item>
@@ -172,7 +185,7 @@ const Upload = props => {
           disabled={!isEnabled}
           title="Upload!"
           onPress={() => {
-            validateInputs(inputs,props)
+            validateInputs(inputs, props);
           }}
         />
         <Button

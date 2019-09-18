@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, keyExtractor, StyleSheet,useState } from "react";
 import PropTypes from "prop-types";
-import { FlatList } from "react-native";
 import ListItem from "./ListItem";
 import { MediaContext } from "../contexts/MediaContext";
 import {List as BaseList} from 'native-base';
