@@ -8,13 +8,11 @@ import {
   Alert,
   Image
 } from "react-native";
-import PropTypes from "prop-types";
 import FormTextInput from "../components/FormTextInput";
-import useSignUpForm from "../hooks/LoginHook";
-import mediaAPI from "../hooks/ApiHooks";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
+const validate = require("validate.js");
 
 import {
   Container,
@@ -39,11 +37,10 @@ const Upload = props => {
       aspect: [4, 3]
     });
 
-    console.log("Picked Image:",result);
+    console.log("Picked Image:", result);
 
     if (!result.cancelled) {
       setImage(result);
-
     }
   };
 
@@ -63,8 +60,60 @@ const Upload = props => {
     handleTitleChange,
     inputs,
     handleDescChange,
-    handleUpload
+    handleUpload,
+    clearForm
   } = useUploadHooks();
+
+  const canSubmit = () => {
+    const isEmpty = obj => {
+      return Object.getOwnPropertyNames(obj).length >= 1;
+    };
+
+    console.log(image);
+    if (inputs.description && inputs.title && isEmpty(image)) {
+      return true;
+    }
+  };
+  const isEnabled = canSubmit();
+
+  const validateInputs = (inputs, props) => {
+    const constraints = {
+      title: {
+        presence: {
+          message: "^You must enter a title!"
+        },
+        length: {
+          minimum: 5,
+          message: "^title must be atleast 5 characters"
+        }
+      },
+      description: {
+        presence: {
+          message: "^You must give a description of your image!"
+        },
+        length: {
+          minimum: 10,
+          message: "^Description must be atleast 10 characters"
+        }
+      }
+    };
+    const titleError = validate({ title: inputs.title }, constraints);
+    const descError = validate({ description: inputs.description }, constraints);
+    if (!titleError.title && !descError.description ) {
+      handleUpload(image, inputs.title, inputs.description);
+      props.navigation.navigate("Home");
+      console.log("Upload Done!");
+    } else {
+      const errorArray = [titleError.title,descError.description];
+
+      for (let i = 0; i < errorArray.length; i++) {
+        if (errorArray[i]) {
+          console.log("alert:",errorArray[i][0])
+          alert(errorArray[i][0]);
+        }
+      }
+    }
+  };
 
   return (
     <Content>
@@ -120,10 +169,17 @@ const Upload = props => {
         </Item>
 
         <Button
+          disabled={!isEnabled}
           title="Upload!"
           onPress={() => {
-            handleUpload(image,inputs.title,inputs.description);
-            props.navigation.navigate("Home");
+            validateInputs(inputs,props)
+          }}
+        />
+        <Button
+          title="Reset Form"
+          onPress={() => {
+            clearForm();
+            setImage();
           }}
         />
       </Form>

@@ -1,8 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
-import Navigator from "../navigators/Navigator";
-import PropTypes from "prop-types";
-import AImage from "../components/AsyncImage";
+
 
 import {
   Container,
