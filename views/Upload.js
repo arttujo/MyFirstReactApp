@@ -15,8 +15,6 @@ import * as Permissions from "expo-permissions";
 import mediaAPI from "../hooks/ApiHooks";
 const validate = require("validate.js");
 import { MediaContext } from "../contexts/MediaContext";
-
-
 import {
   Container,
   Header,
@@ -34,8 +32,10 @@ import List from "../components/List";
 
 const Upload = props => {
   const [image, setImage] = useState({});
-  const { getAllMedia } = mediaAPI();
+  const [loading, setLoading] = useState(true);
+  const { reloadAllMedia } = mediaAPI();
   const { media, setMedia } = useContext(MediaContext);
+
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -109,13 +109,23 @@ const Upload = props => {
       constraints
     );
     if (!titleError.title && !descError.description) {
-      handleUpload(image, inputs.title, inputs.description);
-      setMedia({});
-      setMedia()
+      handleUpload(image, inputs.title, inputs.description).then(data => {
+        //should add error handling here
+        console.log("then data:", data);
+        clearForm();
+        setImage();
+        setMedia([]);
+        setTimeout(()=>{
+          reloadAllMedia(setMedia)
+          setLoading(false)
+          props.navigation.navigate("Home");
+        },2000)
+
+        console.log("Upload Done!");
+        alert("Upload Done!");
 
 
-      props.navigation.navigate("Home");
-      console.log("Upload Done!");
+      });
     } else {
       const errorArray = [titleError.title, descError.description];
 

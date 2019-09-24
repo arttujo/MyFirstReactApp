@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import { AsyncStorage, Alert } from "react-native";
 import { MediaContext } from "../contexts/MediaContext";
 
-
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
 const regUrl = "http://media.mw.metropolia.fi/wbma/users/";
 
@@ -35,6 +34,18 @@ const fetchPostUrl = async (url, data) => {
 };
 
 const mediaAPI = () => {
+  const reloadAllMedia = setMedia => {
+    fetchGetUrl("media").then(json => {
+      setMedia(json);
+    });
+  };
+
+  const uploadFile = async (formData, user) => {
+    return fetchPostUrl("media", formData, user.token).then(json => {
+      return json;
+    });
+  };
+
   const getAllMedia = () => {
     const { media, setMedia } = useContext(MediaContext);
     const [loading, setLoading] = useState(true);
@@ -132,8 +143,6 @@ const mediaAPI = () => {
     }
   };
 
-
-
   return {
     getAllMedia,
     getThumbnail,
@@ -142,7 +151,9 @@ const mediaAPI = () => {
     getUserFromToken,
     getAvatar,
     userToContext,
-    checkUser
+    checkUser,
+    reloadAllMedia,
+    uploadFile
   };
 };
 
