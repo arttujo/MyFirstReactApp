@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AsyncStorage,Image } from "react-native";
+import { AsyncStorage, Image } from "react-native";
 import PropTypes from "prop-types";
 import {
   Container,
@@ -14,7 +14,7 @@ import {
   Left,
   Body,
   Right,
-  Font,
+  Font
 } from "native-base";
 import mediaAPI from "../hooks/ApiHooks";
 
@@ -55,7 +55,9 @@ const Profile = props => {
     await AsyncStorage.clear();
     props.navigation.navigate("Auth");
   };
-
+  const navMyFiles = () => {
+    props.navigation.push("MyFiles");
+  }
   return (
     <Card>
       <CardItem header>
@@ -63,7 +65,7 @@ const Profile = props => {
       </CardItem>
       <CardItem>
         <Left>
-          <Image source={{ uri: avatar }} style ={{width: 100, height: 100}}/>
+          <Image source={{ uri: avatar }} style={{ width: 100, height: 100 }} />
         </Left>
         <Body>
           <Text>Username: {user.username}</Text>
@@ -73,6 +75,9 @@ const Profile = props => {
       </CardItem>
       <CardItem>
         <Body>
+          <Button onPress={navMyFiles}>
+            <Text>View my files</Text>
+          </Button>
           <Button onPress={signOutAsync}>
             <Text>Log Out</Text>
           </Button>

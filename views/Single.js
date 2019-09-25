@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
-
 
 import {
   Container,
@@ -16,28 +15,43 @@ import {
   Body,
   Right
 } from "native-base";
-
+import mediaAPI from "../hooks/ApiHooks";
 const Single = props => {
+  const { fetchUser } = mediaAPI();
+  const [username, setUsername] = useState({});
   const { navigation } = props;
   const file = navigation.state.params.file;
-  console.log("single:",file)
+  console.log("single:", file);
+
+  useEffect(() => {
+    fetchUser(file.user_id).then(json => {
+      console.log("singleFetchUser", json);
+      setUsername(json);
+    });
+  }, []);
+
   return (
     <Container>
       <Content>
         <Card>
           <CardItem>
             <Body>
-              <Text>{file.title}</Text>
+              <Text>
+                {file.title} By: {username.username}{" "}
+              </Text>
             </Body>
           </CardItem>
           <CardItem>
-            <Image source={{uri:"http://media.mw.metropolia.fi/wbma/uploads/" + file.filename}}
+            <Image
+              source={{
+                uri:
+                  "http://media.mw.metropolia.fi/wbma/uploads/" + file.filename
+              }}
               style={{
                 flex: 1,
                 width: null,
                 height: 350
               }}
-
             />
           </CardItem>
 

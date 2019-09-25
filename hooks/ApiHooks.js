@@ -4,6 +4,7 @@ import { MediaContext } from "../contexts/MediaContext";
 
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
 const regUrl = "http://media.mw.metropolia.fi/wbma/users/";
+const userUrl = "http://media.mw.metropolia.fi/wbma/media/user/";
 
 const fetchGetUrl = async url => {
   const userToken = await AsyncStorage.getItem("userToken");
@@ -33,15 +34,52 @@ const fetchPostUrl = async (url, data) => {
   return json;
 };
 
+const fetchDeleteUrl = async url => {
+  const userToken = await AsyncStorage.getItem("userToken");
+  console.log("fetchDeleteUrl", url);
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "x-access-token": userToken
+    }
+  });
+  const json = await response.json();
+  return json;
+};
+
 const mediaAPI = () => {
   const reloadAllMedia = setMedia => {
-
-      fetchGetUrl(apiUrl + "media").then(json => {
-        setMedia(json);
-      });
-
+    fetchGetUrl(apiUrl + "media").then(json => {
+      setMedia(json);
+    });
   };
 
+  const deleteFile = (file_id) => {
+    fetchDeleteUrl(apiUrl+"media/"+file_id).then(json =>{
+      console.log(json)
+    })
+  };
+
+  const getUserMedia = () => {
+    const [media, setMedia] = useState();
+    const { user } = useContext(MediaContext);
+    console.log("uID", user.user_id);
+    useEffect(() => {
+      fetchGetUrl(userUrl + user.user_id).then(json => {
+        console.log("fetchusermedia", json);
+        setMedia(json);
+      });
+    }, []);
+
+    return media;
+  };
+
+  const fetchUser = async id => {
+    return fetchGetUrl(regUrl + id).then(json => {
+      console.log("fetchuser", json);
+      return json;
+    });
+  };
   const uploadFile = async formData => {
     return fetchUploadUrl("media", formData).then(json => {
       return json;
@@ -174,7 +212,10 @@ const mediaAPI = () => {
     userToContext,
     checkUser,
     reloadAllMedia,
-    uploadFile
+    uploadFile,
+    fetchUser,
+    getUserMedia,
+    deleteFile
   };
 };
 

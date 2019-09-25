@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, Text, View, Image, TouchableOpacity, } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity,Alert } from "react-native";
+import mediaAPI from "../hooks/ApiHooks";
 import {
   ListItem as BaseListItem,
   Left,
@@ -28,7 +29,10 @@ const getThumbnail = (url) => {
   return thumbnails;
 };
 
-const ListItem = props => {
+
+
+const UserFilesListItem = props => {
+  const {deleteFile,getUserMedia} = mediaAPI()
   const {navigation, singleMedia} = props;
   const tn = getThumbnail(singleMedia.file_id);
 
@@ -48,11 +52,17 @@ const ListItem = props => {
           {singleMedia.description}
         </Text>
       </Body>
-      <Right >
-      {/* style={{flex:1,flexDirection:"row", justifyContent:"space-between"}} */}
-      {/* <Button
+      <Right style={{flex:1,flexDirection:"row", justifyContent:"space-between"}}>
+      <Button
           onPress={() => {
-            deleteFile(file.file_id);
+            deleteFile(singleMedia.file_id);
+            props.navigation.goBack()
+            Alert.alert(
+              "Success",
+              "File Deleted!",
+              [{ text: "OK", onPress: () => props.navigation.push("MyFiles") }],
+              { cancelable: false }
+            );
           }}
         >
           <Text>Delete</Text>
@@ -64,9 +74,7 @@ const ListItem = props => {
           }}
         >
           <Text>Update</Text>
-        </Button> */}
-
-
+        </Button>
         <Button
           onPress={() => {
             navigation.push("Single", { file: singleMedia });
@@ -79,8 +87,8 @@ const ListItem = props => {
   );
 };
 
-ListItem.propTypes = {
+UserFilesListItem.propTypes = {
   singleMedia: PropTypes.object
 };
 
-export default ListItem;
+export default UserFilesListItem;

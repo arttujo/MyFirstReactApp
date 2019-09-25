@@ -48,10 +48,14 @@ const useUploadHooks = props => {
 
     // Upload the image using the fetch and FormData APIs
     const formData = new FormData();
-
+    const moreData = {
+      description: "This is the actual description",
+      someData: "Some other data I want to save"
+    };
     formData.append("file", { uri: localUri, name: filename, type });
     formData.append("title", title);
     formData.append("description", description);
+
     const userToken = await AsyncStorage.getItem("userToken");
     console.log("FORMDATA", formData);
     // const response = await fetch("http://media.mw.metropolia.fi/wbma/media", {
