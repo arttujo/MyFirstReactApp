@@ -37,11 +37,12 @@ const Single = props => {
           <CardItem>
             <Body>
               <Text>
-                {file.title} By: {username.username}{" "}
+                {file.title} By: {username.username}
               </Text>
             </Body>
           </CardItem>
           <CardItem>
+            {file.media_type === 'image' &&
             <Image
               source={{
                 uri:
@@ -53,6 +54,16 @@ const Single = props => {
                 height: 350
               }}
             />
+            }
+            {file.media_type === 'video' &&
+              <Video source={{uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + file.filename}}
+                style={{
+                  width: '100%',
+                  height: 500,
+                }}
+                useNativeControls={true}
+              />
+              }
           </CardItem>
 
           <CardItem>

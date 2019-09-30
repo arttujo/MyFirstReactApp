@@ -47,6 +47,22 @@ const fetchDeleteUrl = async url => {
   return json;
 };
 
+const fetchPutUrl = async (url, data) => {
+  const userToken = await AsyncStorage.getItem("userToken");
+  console.log("fetchPutUrl", url);
+  console.log("fetchPutUrl", data);
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "x-access-token": userToken,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+  const json = await response.json();
+  return json;
+};
+
 const mediaAPI = () => {
   const reloadAllMedia = setMedia => {
     fetchGetUrl(apiUrl + "media").then(json => {
@@ -54,10 +70,15 @@ const mediaAPI = () => {
     });
   };
 
-  const deleteFile = (file_id) => {
-    fetchDeleteUrl(apiUrl+"media/"+file_id).then(json =>{
-      console.log(json)
-    })
+  const deleteFile = file_id => {
+    fetchDeleteUrl(apiUrl + "media/" + file_id).then(json => {
+      console.log(json);
+    });
+  };
+  const updateFile = (file_id, data) => {
+    fetchPutUrl(apiUrl + "media/" + file_id, data).then(json => {
+      console.log(json);
+    });
   };
 
   const getUserMedia = () => {
@@ -215,7 +236,8 @@ const mediaAPI = () => {
     uploadFile,
     fetchUser,
     getUserMedia,
-    deleteFile
+    deleteFile,
+    updateFile
   };
 };
 
