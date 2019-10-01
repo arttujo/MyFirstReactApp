@@ -16,6 +16,7 @@ import {
   Right
 } from "native-base";
 import mediaAPI from "../hooks/ApiHooks";
+import {Video} from "expo-av"
 const Single = props => {
   const { fetchUser } = mediaAPI();
   const [username, setUsername] = useState({});
@@ -42,6 +43,7 @@ const Single = props => {
             </Body>
           </CardItem>
           <CardItem>
+            <Body>
             {file.media_type === 'image' &&
             <Image
               source={{
@@ -64,6 +66,7 @@ const Single = props => {
                 useNativeControls={true}
               />
               }
+              </Body>
           </CardItem>
 
           <CardItem>
