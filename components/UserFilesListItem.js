@@ -70,7 +70,7 @@ const UserFilesListItem = props => {
 
         <Button
           onPress={() => {
-            updateFile(file.file_id);
+            props.navigation.push("Update",{file: singleMedia})
           }}
         >
           <Text>Update</Text>
